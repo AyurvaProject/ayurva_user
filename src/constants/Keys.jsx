@@ -1,5 +1,1 @@
-const Keys = () => {
-  return <></>;
-};
-
-export default Keys;
+export const API_URL = "http://localhost:3001";
