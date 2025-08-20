@@ -24,11 +24,13 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import SendIcon from "@mui/icons-material/Send";
 import ResendOtpSection from "./ResendOTPSection";
 import { GetOneUser } from "../../apis/auth/Auth";
+import { useNavigate } from "react-router-dom";
 import { is } from "zod/locales";
 // import { pharmacistSchema } from "../../validation/signupFormValidation/SignUpFormValidation";
 // import logo from "../../assets/img/l";
 
 const VerifyOtpSection = ({ id }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [isFetching, setIsFetching] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -99,6 +101,7 @@ const VerifyOtpSection = ({ id }) => {
       await VerifyOtp(formData, id);
       showSnackbar("success", false, "Success. Your email is verified.");
       reset();
+      navigate("/login");
     } catch (error) {
       if (
         error.response &&

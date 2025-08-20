@@ -12,6 +12,7 @@ import LandingPage from "./pages/landingpage/LandingPage";
 import VerifyOtpPage from "./pages/auth/VerifyOTP";
 import Layout from "./layout";
 import Profile from "./pages/auth/Profile";
+import ProfilePage from "./pages/profile/ProfilePage";
 import LoginPage from "./pages/auth/LoginPage";
 import Registration from "./pages/auth/Registration";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
@@ -26,7 +27,9 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route element={<ProtectedRoute roles={["user"]} />}>
+              <Route path="/profile" element={<ProfilePage />} />
+            </Route>
           </Route>
           <Route path="/login" element={<SignInPage />} />
           <Route path="/registration" element={<Registration />} />

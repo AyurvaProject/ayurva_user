@@ -79,3 +79,12 @@ export const IsTokenExpired =(token) => {
         return true;
     }
 }
+
+export const UpdateUser = async (id, data) => {
+  await axios.patch(`${API_URL}/users/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Authorization": `Bearer ${localStorage.getItem("token")}`
+    }
+  })
+}

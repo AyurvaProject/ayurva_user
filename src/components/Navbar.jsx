@@ -18,9 +18,16 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import { Search, ShoppingCart, ArrowDropDown } from "@mui/icons-material";
 import { styled } from "@mui/system";
 import logo from "../assets/img/logo.png";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { GetCurrentUser } from "../apis/auth/Auth";
 
 const Navbar = () => {
   // Handle user menu
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
@@ -116,7 +123,7 @@ const Navbar = () => {
 
           {/* Profile Dropdown */}
           <IconButton onClick={handleMenuOpen}>
-            <Avatar src="/profile.jpg" />
+            <Avatar src={GetCurrentUser()?.user_profile_pic} />
             <ArrowDropDown />
           </IconButton>
           <Menu
@@ -124,8 +131,14 @@ const Navbar = () => {
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+            <MenuItem onClick={() => navigate("/profile")}>
+              <AccountCircleIcon sx={{ mr: 1 }} />
+              Profile
+            </MenuItem>
+            <MenuItem onClick={() => logout()}>
+              <LogoutIcon sx={{ mr: 1 }} />
+              Logout
+            </MenuItem>
           </Menu>
         </Toolbar>
       </Container>

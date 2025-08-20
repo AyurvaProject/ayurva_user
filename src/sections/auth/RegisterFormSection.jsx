@@ -209,7 +209,8 @@ const RegisterFormSection = () => {
               control={control}
               maxSize={5 * 1024 * 1024}
               mediaType="image"
-              enableCrop={false}
+              enableCrop={true}
+              cropAspectRatio={1 / 1}
               onFileChange={(file) =>
                 handleFileChange("user_profile_pic", file)
               }

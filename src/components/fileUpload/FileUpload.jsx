@@ -39,7 +39,7 @@ import ReactCrop, { centerCrop, makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
 const DropzoneContainer = styled(Paper)(
-  ({ theme, isDragActive, hasError }) => ({
+  ({ theme, isDragActive, hasError, hasPreview }) => ({
     border: `2px dashed ${
       hasError
         ? theme.palette.error.main
@@ -49,46 +49,78 @@ const DropzoneContainer = styled(Paper)(
     }`,
     backgroundColor: isDragActive
       ? theme.palette.primary.light + "20"
+      : hasPreview
+      ? theme.palette.grey[50]
       : "transparent",
-    padding: theme.spacing(6),
+    padding: theme.spacing(2),
     textAlign: "center",
     cursor: "pointer",
     transition: "all 0.2s ease-in-out",
+    position: "relative",
+    overflow: "hidden",
+    minHeight: 120,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
     "&:hover": {
       borderColor: theme.palette.primary.main,
-      backgroundColor: theme.palette.primary.light + "10",
+      backgroundColor: hasPreview
+        ? theme.palette.grey[50]
+        : theme.palette.primary.light + "10",
     },
   })
 );
 
 const PreviewContainer = styled(Box)(({ theme }) => ({
-  position: "relative",
-  display: "inline-block",
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: theme.spacing(1),
   "&:hover .delete-button": {
     opacity: 1,
-  },
-  "& .delete-button": {
-    opacity: 0,
-    transition: "opacity 0.2s ease-in-out",
   },
 }));
 
 const PreviewMedia = styled("img")(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
-  width: "100%",
-  height: "auto",
-  maxHeight: 256,
+  maxWidth: "100%",
+  maxHeight: "100%",
   objectFit: "contain",
-  border: `1px solid ${theme.palette.grey[300]}`,
 }));
 
 const PreviewVideo = styled("video")(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
-  width: "100%",
-  height: "auto",
-  maxHeight: 256,
+  maxWidth: "100%",
+  maxHeight: "100%",
   objectFit: "contain",
-  border: `1px solid ${theme.palette.grey[300]}`,
+}));
+
+const OverlayContent = styled(Box)(({ theme, hasPreview }) => ({
+  position: "relative",
+  zIndex: hasPreview ? 1 : "auto",
+  backgroundColor: hasPreview ? "rgba(255, 255, 255, 0.8)" : "transparent",
+  padding: hasPreview ? theme.spacing(1) : 0,
+  borderRadius: theme.shape.borderRadius,
+}));
+
+const DeleteButton = styled(IconButton)(({ theme }) => ({
+  position: "absolute",
+  top: 8,
+  right: 8,
+  backgroundColor: theme.palette.background.paper,
+  boxShadow: theme.shadows[2],
+  opacity: 0,
+  transition: "opacity 0.2s ease-in-out",
+  zIndex: 10,
+  "&:hover": {
+    backgroundColor: theme.palette.error.light,
+    color: theme.palette.error.contrastText,
+  },
 }));
 
 const CropDialogContent = styled(DialogContent)(({ theme }) => ({
@@ -527,7 +559,8 @@ export const FileUpload = ({
     onDragLeave: onBlur,
   });
 
-  const handleRemove = () => {
+  const handleRemove = (e) => {
+    e.stopPropagation();
     onChange(null);
     setPreview(null);
     setUploadStatus("idle");
@@ -581,6 +614,8 @@ export const FileUpload = ({
       return "Uploading file...";
     } else if (isDragActive) {
       return "Drop the file here...";
+    } else if (preview) {
+      return "Click to change file or drag a new one";
     } else {
       return "Drag & drop a file here, or click to select";
     }
@@ -606,65 +641,65 @@ export const FileUpload = ({
         {...getRootProps()}
         isDragActive={isDragActive}
         hasError={!!error || !!errorMessage}
+        hasPreview={!!preview}
         className={className}
         elevation={0}
       >
         <input {...getInputProps()} />
-        <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-          {renderUploadIcon()}
 
-          <Typography
-            variant="body1"
-            color={uploadStatus === "uploading" ? "primary" : "textPrimary"}
+        {preview && (
+          <PreviewContainer className={previewClassName}>
+            {isVideo(value) ||
+            (initialPreview && isVideoUrl(initialPreview)) ? (
+              <PreviewVideo controls src={preview} />
+            ) : (
+              <PreviewMedia src={preview} alt="Preview" />
+            )}
+            <DeleteButton
+              className="delete-button"
+              onClick={handleRemove}
+              disabled={uploadStatus === "uploading"}
+              size="small"
+            >
+              <DeleteIcon fontSize="small" />
+            </DeleteButton>
+          </PreviewContainer>
+        )}
+
+        <OverlayContent hasPreview={!!preview}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            gap={1}
           >
-            {renderUploadText()}
-          </Typography>
+            {!preview && renderUploadIcon()}
 
-          <Typography variant="caption" color="textSecondary">
-            {getSupportedTypesText()}
-            {maxSize && ` (Max ${maxSize / (1024 * 1024)}MB)`}
-          </Typography>
-        </Box>
+            <Typography
+              variant="body2"
+              color={uploadStatus === "uploading" ? "primary" : "textPrimary"}
+              sx={{ fontWeight: preview ? 600 : "normal" }}
+            >
+              {renderUploadText()}
+            </Typography>
+
+            {!preview && (
+              <Typography variant="caption" color="textSecondary">
+                {getSupportedTypesText()}
+                {maxSize && ` (Max ${maxSize / (1024 * 1024)}MB)`}
+              </Typography>
+            )}
+          </Box>
+        </OverlayContent>
       </DropzoneContainer>
 
-      {(preview || error?.message || errorMessage) && (
-        <Box sx={{ mt: 2 }}>
-          {preview && (
-            <PreviewContainer className={previewClassName}>
-              {isVideo(value) ||
-              (initialPreview && isVideoUrl(initialPreview)) ? (
-                <PreviewVideo controls src={preview} />
-              ) : (
-                <PreviewMedia src={preview} alt="Preview" />
-              )}
-              <IconButton
-                className="delete-button"
-                sx={{
-                  position: "absolute",
-                  top: 8,
-                  right: 8,
-                  bgcolor: "background.paper",
-                  boxShadow: 2,
-                  "&:hover": { bgcolor: "error.light" },
-                }}
-                onClick={handleRemove}
-                disabled={uploadStatus === "uploading"}
-                size="small"
-              >
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </PreviewContainer>
-          )}
-
-          {(error?.message || errorMessage) && (
-            <FormHelperText error sx={{ mt: 1 }}>
-              {error?.message || errorMessage}
-            </FormHelperText>
-          )}
-        </Box>
+      {(error?.message || errorMessage) && (
+        <FormHelperText error className={errorClassName} sx={{ mt: 1 }}>
+          {error?.message || errorMessage}
+        </FormHelperText>
       )}
 
-      {description && !error?.message && !errorMessage && (
+      {description && !error?.message && !errorMessage && !preview && (
         <FormHelperText className={descriptionClassName} sx={{ mt: 1 }}>
           {description}
         </FormHelperText>
