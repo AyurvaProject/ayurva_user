@@ -18,6 +18,11 @@ import Registration from "./pages/auth/Registration";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import SignInPage from "./pages/auth/SignIn";
+import AddressEdit from "./pages/address/AddressEdit";
+import AddPrescription from "./pages/prescription/AddPrescription";
+import PharmacyList from "./pages/pharmacy/PharmacyList";
+import SinglePharmacy from "./pages/pharmacy/SinglePharmacy";
+import SingleProduct from "./pages/product/SingleProduct";
 
 function App() {
   return (
@@ -29,7 +34,13 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route element={<ProtectedRoute roles={["user"]} />}>
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/createAddress" element={<AddressEdit />} />
+              <Route path="/editAddress/:id" element={<AddressEdit />} />
+              <Route path="/prescription/add" element={<AddPrescription />} />
             </Route>
+            <Route path="/pharmacies" element={<PharmacyList />} />
+            <Route path="/pharmacies/:id" element={<SinglePharmacy />} />
+            <Route path="/products/:id" element={<SingleProduct />} />
           </Route>
           <Route path="/login" element={<SignInPage />} />
           <Route path="/registration" element={<Registration />} />

@@ -88,3 +88,12 @@ export const UpdateUser = async (id, data) => {
     }
   })
 }
+
+export const GetOneUserById = async (id) => {
+  const response = await axios.get(`${API_URL}/users/${id}`,{
+    headers: {
+      "Authorization": `Bearer ${localStorage.getItem("token")}`
+    }
+  })
+  return response.data.data;
+}

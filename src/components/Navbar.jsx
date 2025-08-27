@@ -53,17 +53,19 @@ const Navbar = () => {
           <Typography
             variant="h6"
             component="div"
+            onClick={() => navigate("/")}
             sx={{
               display: "flex",
               alignItems: "center",
               color: "#4527a0",
               fontWeight: "bold",
+              cursor: "pointer",
             }}
           >
             <img
               src={logo}
               alt="Ayurva"
-              style={{ width: 40, marginRight: 20 }}
+              style={{ width: 40, marginRight: 20, cursor: "pointer" }}
             />
             Ayurva
           </Typography>
@@ -112,6 +114,7 @@ const Navbar = () => {
               borderRadius: 2,
               textTransform: "none",
             }}
+            onClick={() => navigate("/prescription/add")}
           >
             Prescription Upload
           </Button>

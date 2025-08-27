@@ -60,7 +60,7 @@ const ProfileMainSection = () => {
         sx={{ borderRight: 1, borderColor: "divider" }}
       >
         <Tab label="Profile" {...a11yProps(0)} />
-        <Tab label="Adrress Box" {...a11yProps(1)} />
+        <Tab label="My Addresses" {...a11yProps(1)} />
         <Tab label="Requests" {...a11yProps(2)} />
         <Tab label="Read Prescriptions" {...a11yProps(3)} />
         <Tab label="Orders" {...a11yProps(4)} />

@@ -8,41 +8,64 @@ import {
   Typography,
   Button,
   Link,
+  Skeleton,
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import pharmacy1 from "../../assets/img/phamacy1.jpg";
-import pharmacy2 from "../../assets/img/pharmacy2.jpg";
-import pharmacy3 from "../../assets/img/pharmacy3.jpg";
-import pharmacy4 from "../../assets/img/pharmacy4.jpg";
-
-const pharmacies = [
-  {
-    name: "Pharmacy One",
-    distance: "1km",
-    image: `${pharmacy1}`, // Replace with actual image
-    link: "/pharmacy-one",
-  },
-  {
-    name: "Pharmacy Two",
-    distance: "2km",
-    image: `${pharmacy2}`, // Replace with actual image
-    link: "/pharmacy-two",
-  },
-  {
-    name: "Pharmacy Three",
-    distance: "2.2km",
-    image: `${pharmacy3}`, // Replace with actual image
-    link: "/pharmacy-three",
-  },
-  {
-    name: "Pharmacy Four",
-    distance: "3.1km",
-    image: `${pharmacy4}`, // Replace with actual image
-    link: "/pharmacy-four",
-  },
-];
+import {
+  GetNearPharmacyByUserId,
+  GetAllPharmacies,
+} from "../../apis/pharmacy/Pharmacy";
+import { GetCurrentUser } from "../../apis/auth/Auth";
+import { motion, AnimatePresence } from "framer-motion";
+import PharmacyCard from "../../components/pharmacy/PharmacyCard";
+import { IsAddressAvailableForUser } from "../../apis/address/Address";
 
 const NearestPharmacies = () => {
+  const [pharmacies, setPharmacies] = React.useState([]);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchPharmacies = async () => {
+      try {
+        let data;
+        const isAvailable = await IsAddressAvailableForUser(
+          GetCurrentUser()?.id
+        );
+        if (GetCurrentUser() && isAvailable) {
+          data = await GetNearPharmacyByUserId();
+        } else {
+          data = await GetAllPharmacies();
+        }
+
+        setPharmacies(data || []);
+      } catch (err) {
+        console.error("Failed to fetch pharmacies", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPharmacies();
+  }, []);
+
+  // Auto-rotate every 5 seconds
+  React.useEffect(() => {
+    if (pharmacies.length === 0) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 4) % pharmacies.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [pharmacies]);
+
+  // Pick current 4 pharmacies (wrap around if needed)
+  const currentPharmacies =
+    pharmacies.slice(currentIndex, currentIndex + 4).length === 4
+      ? pharmacies.slice(currentIndex, currentIndex + 4)
+      : [
+          ...pharmacies.slice(currentIndex),
+          ...pharmacies.slice(0, 4 - (pharmacies.length - currentIndex)),
+        ];
+
   return (
     <Box sx={{ maxWidth: "1100px", margin: "0 auto", padding: "20px" }}>
       {/* Title & View All Link */}
@@ -66,43 +89,79 @@ const NearestPharmacies = () => {
         </Link>
       </Box>
 
-      {/* Pharmacy Cards */}
-      <Grid container spacing={2}>
-        {pharmacies.map((pharmacy, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card sx={{ borderRadius: "8px", boxShadow: 2 }}>
-              <CardMedia
-                component="img"
-                height="140"
-                image={pharmacy.image}
-                alt={pharmacy.name}
-              />
-              <CardContent sx={{ textAlign: "center" }}>
-                <Typography variant="body1" fontWeight="bold">
-                  {pharmacy.name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {pharmacy.distance}
-                </Typography>
-              </CardContent>
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                href={pharmacy.link}
-                sx={{
-                  borderRadius: "0 0 8px 8px",
-                  backgroundColor: "#0056b3",
-                  "&:hover": { backgroundColor: "#003f7f" },
-                }}
-                endIcon={<ArrowForwardIcon />}
+      {/* Loading State */}
+      {loading ? (
+        <Grid container spacing={2}>
+          {Array.from(new Array(4)).map((_, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Card sx={{ borderRadius: "8px", boxShadow: 2 }}>
+                <Skeleton variant="rectangular" height={140} />
+                <CardContent sx={{ textAlign: "center" }}>
+                  <Skeleton width="60%" />
+                  <Skeleton width="40%" />
+                </CardContent>
+                <Skeleton variant="rectangular" height={40} />
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Grid container spacing={2} sx={{ overflow: "hidden" }}>
+          <AnimatePresence mode="wait">
+            {currentPharmacies.map((pharmacy, index) => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={3}
+                key={pharmacy.pharmacy_id || index}
               >
-                Show More
-              </Button>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                <motion.div
+                  key={pharmacy.pharmacy_id || index}
+                  initial={{ opacity: 0, x: 200 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -200 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <PharmacyCard pharmacy={pharmacy} />
+                  {/* <Card sx={{ borderRadius: "8px", boxShadow: 2 }}>
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={
+                        pharmacy.pharmacy_img_01 || "/default-pharmacy.jpg"
+                      }
+                      alt={pharmacy.pharmacy_name}
+                    />
+                    <CardContent sx={{ textAlign: "center" }}>
+                      <Typography variant="body1" fontWeight="bold">
+                        {pharmacy.pharmacy_name}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        {pharmacy.pharmacy_district}
+                      </Typography>
+                    </CardContent>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                      href={`/pharmacy/${pharmacy.pharmacy_id}`}
+                      sx={{
+                        borderRadius: "0 0 8px 8px",
+                        backgroundColor: "#0056b3",
+                        "&:hover": { backgroundColor: "#003f7f" },
+                      }}
+                      endIcon={<ArrowForwardIcon />}
+                    >
+                      Show More
+                    </Button>
+                  </Card> */}
+                </motion.div>
+              </Grid>
+            ))}
+          </AnimatePresence>
+        </Grid>
+      )}
     </Box>
   );
 };
