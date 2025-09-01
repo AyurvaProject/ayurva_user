@@ -33,12 +33,12 @@ const NearestPharmacies = () => {
           GetCurrentUser()?.id
         );
         if (GetCurrentUser() && isAvailable) {
-          data = await GetNearPharmacyByUserId();
+          data = await GetAllPharmacies();
         } else {
           data = await GetAllPharmacies();
         }
 
-        setPharmacies(data || []);
+        setPharmacies(data);
       } catch (err) {
         console.error("Failed to fetch pharmacies", err);
       } finally {

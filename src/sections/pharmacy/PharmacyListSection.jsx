@@ -28,7 +28,7 @@ const PharmacyListSection = () => {
     <Box
       sx={{ width: "100%", my: 4, display: "flex", flexDirection: "column" }}
     >
-      {!loading && hasAddress && <NearPharmacyListSection />}
+      {/* {!loading && hasAddress && <NearPharmacyListSection />} */}
       <AllPharmacyListSection />
     </Box>
   );

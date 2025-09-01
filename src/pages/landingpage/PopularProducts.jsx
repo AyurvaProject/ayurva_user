@@ -10,6 +10,7 @@ import {
   Link,
   Skeleton,
 } from "@mui/material";
+import ProductCard from "../../components/product/ProductCard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { GetNonPrescriptionProducts } from "../../apis/products/Products";
 import { motion, AnimatePresence } from "framer-motion";
@@ -115,35 +116,7 @@ const PopularProducts = () => {
                   exit={{ opacity: 0, x: -200 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <Card sx={{ borderRadius: "8px", boxShadow: 2 }}>
-                    <CardMedia
-                      sx={{ height: "180px", width: "100%" }}
-                      component="img"
-                      image={product.product_img2}
-                      alt={product.product_name}
-                    />
-                    <CardContent sx={{ textAlign: "center" }}>
-                      <Typography variant="body1" fontWeight="bold">
-                        {product.product_name}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        LKR {product.product_price}
-                      </Typography>
-                    </CardContent>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      fullWidth
-                      sx={{
-                        borderRadius: "0 0 8px 8px",
-                        backgroundColor: "#0056b3",
-                        "&:hover": { backgroundColor: "#003f7f" },
-                      }}
-                      startIcon={<ShoppingCartIcon />}
-                    >
-                      Add to Cart
-                    </Button>
-                  </Card>
+                  <ProductCard product={product} />
                 </motion.div>
               </Grid>
             ))}

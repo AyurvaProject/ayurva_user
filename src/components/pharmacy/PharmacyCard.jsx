@@ -88,11 +88,7 @@ const PharmacyCard = ({ pharmacy }) => {
         </Typography>
         <Typography variant="body2" color="textSecondary">
           {/* {pharmacy.pharmacy_district} */}
-          {GetCurrentUser()
-            ? distance
-              ? `${distance} km away`
-              : "No address found"
-            : pharmacy.pharmacy_district}
+          {pharmacy.pharmacy_district}
         </Typography>
       </CardContent>
       <Button
