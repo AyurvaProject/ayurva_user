@@ -23,6 +23,8 @@ import AddPrescription from "./pages/prescription/AddPrescription";
 import PharmacyList from "./pages/pharmacy/PharmacyList";
 import SinglePharmacy from "./pages/pharmacy/SinglePharmacy";
 import SingleProduct from "./pages/product/SingleProduct";
+import SinglePrescription from "./pages/prescription/SinglePrescription";
+import NearProducts from "./pages/product/NearProducts";
 
 function App() {
   return (
@@ -37,6 +39,14 @@ function App() {
               <Route path="/createAddress" element={<AddressEdit />} />
               <Route path="/editAddress/:id" element={<AddressEdit />} />
               <Route path="/prescription/add" element={<AddPrescription />} />
+              <Route
+                path="/prescription/:id"
+                element={<SinglePrescription />}
+              />
+              <Route
+                path="/nearProducts/:pres_detail_id/:license_no"
+                element={<NearProducts />}
+              />
             </Route>
             <Route path="/pharmacies" element={<PharmacyList />} />
             <Route path="/pharmacies/:id" element={<SinglePharmacy />} />

@@ -97,6 +97,8 @@ const PrescriptionFormSection = () => {
     },
   });
 
+  console.log("Form values:", getValues());
+
   const handleFileChange = async (fieldName, file) => {
     setValue(fieldName, file);
     await trigger(fieldName);
@@ -127,9 +129,7 @@ const PrescriptionFormSection = () => {
       if (data.pres_status) {
         formData.append("pres_status", data.pres_status);
       }
-      if (data.pres_active_status) {
-        formData.append("pres_active_status", data.pres_active_status);
-      }
+      formData.append("pres_active_status", true);
       if (data.user_id) {
         formData.append("user_id", data.user_id);
       }

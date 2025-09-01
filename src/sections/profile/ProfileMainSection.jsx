@@ -9,6 +9,8 @@ import ProfileAddressSection from "./ProfileAddressSection";
 import ProfilePrRequestSections from "./ProfilePrRequestSection";
 import ProfileReadPrSection from "./ProfileReadPrSection";
 import ProfileOrderSection from "./ProfileOrderSection";
+import ProfilePrOrderSection from "./ProfilePrOrdersSection";
+// import { Ta } from "zod/v4/locales";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -64,6 +66,7 @@ const ProfileMainSection = () => {
         <Tab label="Requests" {...a11yProps(2)} />
         <Tab label="Read Prescriptions" {...a11yProps(3)} />
         <Tab label="Orders" {...a11yProps(4)} />
+        <Tab label="Prescription Orders" {...a11yProps(5)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <ProfileDetailSection />
@@ -79,6 +82,9 @@ const ProfileMainSection = () => {
       </TabPanel>
       <TabPanel value={value} index={4}>
         <ProfileOrderSection />
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        <ProfilePrOrderSection />
       </TabPanel>
     </Box>
   );

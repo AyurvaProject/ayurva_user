@@ -17,6 +17,7 @@ import {
   IsAddressAvailableForUser,
   GetOneAddress,
 } from "../../apis/address/Address";
+import { CreatePrescriptionOrder } from "../../apis/prescriptionOrder/PrescriptionOrder";
 import { GetRoadDistance } from "../../apis/location/Location";
 
 const PharmacyCard = ({ pharmacy }) => {
@@ -39,10 +40,10 @@ const PharmacyCard = ({ pharmacy }) => {
 
   const calculateDistance = async () => {
     if (user) {
-      const isAvailable = await IsAddressAvailableForUser(GetCurrentUser().id);
+      const isAvailable = await IsAddressAvailableForUser(GetCurrentUser()?.id);
       if (isAvailable) {
         console.log("User has an address, calculating distance...", user);
-        const address = await GetOneAddress(8);
+        const address = await GetOneAddress(user?.selected_address_id);
         const distance = await GetRoadDistance(
           address?.user_lat,
           address?.user_lng,

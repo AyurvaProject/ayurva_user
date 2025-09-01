@@ -31,3 +31,13 @@ export const GetReadPrescriptionsByUserId = async () => {
     console.log(response.data.data);
     return response.data.data;
 }
+
+export const GetOnePres = async (id) => {
+    const response = await axios.get(`${API_URL}/prescriptions/${id}`,{
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+    })
+
+    return response.data.data;
+}

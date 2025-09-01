@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
+import ReadPrescriptionSection from "../../pages/prescription/ReadPrescriptionSection";
 
 const ProfileReadPrSection = () => {
-  return <Box>Profile Read Pr Section</Box>;
+  return <ReadPrescriptionSection />;
 };
 
 export default ProfileReadPrSection;
