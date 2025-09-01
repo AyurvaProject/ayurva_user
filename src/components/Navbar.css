@@ -1,0 +1,109 @@
+/* Navbar Container */
+.navbar {
+    background: #fff !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Navbar Toolbar */
+  .navbar-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Logo */
+  .navbar-logo {
+    display: flex;
+    align-items: center;
+    color: #4527a0;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .navbar-logo-img {
+    width: 40px;
+    margin-right: 8px;
+  }
+  
+  /* Search Box */
+  .navbar-search-container {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    margin: 0 16px;
+  }
+  
+  .navbar-category-dropdown {
+    margin-right: 8px;
+    min-width: 140px;
+  }
+  
+  .navbar-searchbox {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+    background: #fff;
+  }
+  
+  .navbar-searchbox input {
+    padding: 10px;
+    width: 100%;
+  }
+  
+  .navbar-search-icon {
+    /* padding: 1px !important; */
+    padding-right: 100px;
+    color: #fff !important;
+    background-color: #1976d2 !important;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    ;
+  }
+  
+  /* Upload Prescription Button */
+  .navbar-prescription-btn {
+    background-color: #1976d2 !important;
+    color: #fff !important;
+    padding: 8px 20px !important;
+    border-radius: 8px !important;
+    text-transform: none !important;
+  }
+  
+  /* Shopping Cart */
+  .navbar-cart {
+    margin: 0 10px;
+  }
+  
+  /* Profile */
+  .navbar-profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  /* Categories Bar */
+  .categories-bar {
+    display: flex;
+    justify-content: center;
+    padding: 8px;
+    background-color: #f5f5f5;
+  }
+  
+  .category-item {
+    margin: 0 16px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .category-item:hover {
+    color: #1976d2;
+  }
+  
