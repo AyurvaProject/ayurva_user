@@ -20,7 +20,7 @@ const roles = [
   {
     title: "Normal Users",
     icon: <PersonIcon sx={{ fontSize: 50, color: "#4F46E5" }} />,
-    path: "http://localhost:5173/login",
+    path: "https://ayurva-user-v2.pages.dev/login",
     color: "#EEF2FF",
   },
   {
