@@ -21,6 +21,8 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import { Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,6 +36,34 @@ import {
   IsAddressAvailableForUser,
 } from "../../apis/address/Address";
 import CustomSnackbar from "../../components/snackbar/CustomSnackbar";
+
+const sriLankanDistricts = [
+  "Colombo",
+  "Gampaha",
+  "Kalutara",
+  "Kandy",
+  "Matale",
+  "Nuwara Eliya",
+  "Galle",
+  "Matara",
+  "Hambantota",
+  "Jaffna",
+  "Kilinochchi",
+  "Mannar",
+  "Vavuniya",
+  "Mullaitivu",
+  "Batticaloa",
+  "Ampara",
+  "Trincomalee",
+  "Kurunegala",
+  "Puttalam",
+  "Anuradhapura",
+  "Polonnaruwa",
+  "Badulla",
+  "Monaragala",
+  "Ratnapura",
+  "Kegalle",
+];
 
 const AddressFormSection = ({ initialData = null, onSubmit }) => {
   const navigate = useNavigate();
@@ -173,28 +203,31 @@ const AddressFormSection = ({ initialData = null, onSubmit }) => {
                 },
               }}
             />
-            <TextField
-              label="District"
-              variant="filled"
-              fullWidth
-              {...register("address_district")}
-              error={!!errors.address_district}
-              helperText={errors.address_district?.message}
-              size="small"
-              sx={{
-                "& .MuiFilledInput-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:not(.Mui-disabled):before": {
-                    borderBottom: "none",
-                  },
-                },
-              }}
-            />
+            <FormControl variant="filled" fullWidth size="small">
+              <InputLabel>District</InputLabel>
+              <Select
+                {...register("address_district")}
+                value={watch("address_district")}
+                onChange={(e) =>
+                  setValue("address_district", e.target.value, {
+                    shouldValidate: true,
+                  })
+                }
+                error={!!errors.address_district}
+              >
+                {sriLankanDistricts.map((district, index) => (
+                  <MenuItem key={index} value={district}>
+                    {district}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.address_district && (
+                <FormHelperText error>
+                  {errors.address_district.message}
+                </FormHelperText>
+              )}
+            </FormControl>
+
             <TextField
               label="Zip Code"
               variant="filled"

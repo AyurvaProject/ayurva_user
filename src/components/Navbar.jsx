@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -22,15 +22,39 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { GetCurrentUser } from "../apis/auth/Auth";
+import HomeIcon from "@mui/icons-material/Home";
+import DnsIcon from "@mui/icons-material/Dns";
+import BadgeIcon from "@mui/icons-material/Badge";
+import { GetCurrentUser, GetOneUserById } from "../apis/auth/Auth";
+import { keyframes } from "@mui/system";
+
+const scrollAnimation = keyframes`
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+`;
 
 const Navbar = () => {
   // Handle user menu
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (GetCurrentUser()) {
+      GetOneUserById(GetCurrentUser().id).then((res) => {
+        setUser(res);
+      });
+    }
+    setLoading(false);
+  }, []);
 
   return (
     <AppBar
@@ -120,25 +144,88 @@ const Navbar = () => {
           </Button>
 
           {/* Icons: Cart & Profile */}
-          <IconButton sx={{ mx: 1 }}>
+          {/* <IconButton sx={{ mx: 1 }}>
             <ShoppingCart />
-          </IconButton>
+          </IconButton> */}
 
           {/* Profile Dropdown */}
-          <IconButton onClick={handleMenuOpen}>
-            <Avatar src={GetCurrentUser()?.user_profile_pic} />
-            <ArrowDropDown />
-          </IconButton>
+          {GetCurrentUser() ? (
+            loading ? (
+              <div>Loading...</div>
+            ) : (
+              <IconButton onClick={handleMenuOpen}>
+                <Avatar src={user?.user_profile_pic} />
+                <ArrowDropDown />
+              </IconButton>
+            )
+          ) : (
+            <Button
+              variant="text"
+              sx={{ textTransform: "none", mx: 1 }}
+              onClick={() => navigate("/main")}
+            >
+              Login
+            </Button>
+          )}
+
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
-            <MenuItem onClick={() => navigate("/profile")}>
+            <MenuItem
+              onClick={() => {
+                navigate("/profile/0");
+                handleMenuClose();
+              }}
+            >
               <AccountCircleIcon sx={{ mr: 1 }} />
               Profile
             </MenuItem>
-            <MenuItem onClick={() => logout()}>
+            <MenuItem
+              onClick={() => {
+                navigate("/profile/1");
+                handleMenuClose();
+              }}
+            >
+              <HomeIcon sx={{ mr: 1 }} />
+              Addresses
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                navigate("/profile/2");
+                handleMenuClose();
+              }}
+            >
+              <DescriptionIcon sx={{ mr: 1 }} />
+              Prescriptions
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                navigate("/profile/4");
+                handleMenuClose();
+              }}
+            >
+              <DnsIcon sx={{ mr: 1 }} />
+              Orders
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                navigate("/profile/5");
+                handleMenuClose();
+              }}
+            >
+              <BadgeIcon sx={{ mr: 1 }} />
+              Prescription Orders
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                logout();
+                navigate("/");
+                handleMenuClose();
+              }}
+              sx={{ color: "red" }}
+            >
               <LogoutIcon sx={{ mr: 1 }} />
               Logout
             </MenuItem>
@@ -149,31 +236,33 @@ const Navbar = () => {
       {/* Categories Bar */}
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          p: 1,
+          overflow: "hidden",
+          whiteSpace: "nowrap",
           bgcolor: "#f5f5f5",
+          p: 0,
+          position: "relative",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          height: "40px",
+          borderBottom: "1px solid #ddd",
         }}
       >
-        {[
-          "Pain Relief",
-          "Cold and Flu",
-          "Diabetes Care",
-          "Digestive Health",
-          "First Aid",
-          "Skin Care",
-          "Child and Baby Care",
-          "Heart Health",
-          "Eye and Ear Care",
-          "Respiratory Health",
-        ].map((category) => (
-          <Typography
-            key={category}
-            sx={{ mx: 2, fontSize: 14, color: "#333", cursor: "pointer" }}
-          >
-            {category}
-          </Typography>
-        ))}
+        <Typography
+          component="div"
+          sx={{
+            display: "inline-block",
+            animation: `${scrollAnimation} 25s linear infinite`,
+            fontSize: 14,
+            color: "#333",
+            fontWeight: 500,
+          }}
+        >
+          🚀 Welcome to Ayurva! — Your one-stop solution for connecting with
+          pharmacists, uploading prescriptions, finding nearby pharmacies, and
+          ordering medicine online. 💊 Get fast delivery and stay healthy with
+          our trusted network of pharmacies and delivery partners.
+        </Typography>
       </Box>
     </AppBar>
   );

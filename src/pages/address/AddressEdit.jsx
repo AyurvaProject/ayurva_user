@@ -10,6 +10,7 @@ import { GetCurrentUser } from "../../apis/auth/Auth";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Box, Divider, Typography } from "@mui/material";
+import LoadingSection from "../../sections/loading/LoadingSection";
 
 const AddressEdit = () => {
   const { id } = useParams();
@@ -46,7 +47,7 @@ const AddressEdit = () => {
     }
   };
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSection />;
   }
 
   return (

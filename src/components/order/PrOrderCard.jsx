@@ -55,11 +55,21 @@ const PrOrderCard = ({ order }) => {
               Pharmacist: {order.pharmacist.pharmacist_name}
             </Typography>
             <Chip
-              label={order.order_pharmacy_status}
+              label={
+                order.order_pharmacy_status === "pending"
+                  ? "Pending"
+                  : order.order_pharmacy_status === "accepted"
+                  ? "Accepted"
+                  : order.order_pharmacy_status === "completed"
+                  ? "Completed"
+                  : "Rejected"
+              }
               color={
                 order.order_pharmacy_status === "pending"
                   ? "warning"
                   : order.order_pharmacy_status === "accepted"
+                  ? "info"
+                  : order.order_pharmacy_status === "completed"
                   ? "success"
                   : "error"
               }
@@ -77,11 +87,21 @@ const PrOrderCard = ({ order }) => {
               Curier: {order?.delivery_person?.delivery_person_name}
             </Typography>
             <Chip
-              label={order.order_delivery_status}
+              label={
+                order.order_delivery_status === "pending"
+                  ? "Pending"
+                  : order.order_delivery_status === "accepted"
+                  ? "Accepted"
+                  : order.order_delivery_status === "completed"
+                  ? "Completed"
+                  : "Pending"
+              }
               color={
                 order.order_delivery_status === "pending"
                   ? "warning"
                   : order.order_delivery_status === "accepted"
+                  ? "info"
+                  : order.order_delivery_status === "completed"
                   ? "success"
                   : "error"
               }

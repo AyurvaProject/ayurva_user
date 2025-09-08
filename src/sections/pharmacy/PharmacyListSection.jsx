@@ -4,6 +4,7 @@ import {
   GetAllPharmacies,
   GetNearPharmacyByUserId,
 } from "../../apis/pharmacy/Pharmacy";
+import LoadingSection from "../loading/LoadingSection";
 import PharmacyCard from "../../components/pharmacy/PharmacyCard";
 import { IsAddressAvailableForUser } from "../../apis/address/Address";
 import AllPharmacyListSection from "./AllPharmacyListSection";
@@ -24,11 +25,16 @@ const PharmacyListSection = () => {
     };
     checkAddress();
   });
+
+  if (loading) {
+    return <LoadingSection />;
+  }
+
   return (
     <Box
       sx={{ width: "100%", my: 4, display: "flex", flexDirection: "column" }}
     >
-      {/* {!loading && hasAddress && <NearPharmacyListSection />} */}
+      {!loading && hasAddress && <NearPharmacyListSection />}
       <AllPharmacyListSection />
     </Box>
   );

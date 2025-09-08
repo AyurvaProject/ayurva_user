@@ -10,6 +10,7 @@ import AddressCard from "../../components/address/AddressCard";
 import CustomSnackbar from "../../components/snackbar/CustomSnackbar";
 import { GetOneUserById } from "../../apis/auth/Auth";
 import { useNavigate } from "react-router-dom";
+import LoadingSection from "../loading/LoadingSection";
 
 const ProfileAddressSection = () => {
   const navigate = useNavigate();
@@ -102,7 +103,7 @@ const ProfileAddressSection = () => {
   };
 
   if (loading || userLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSection />;
   }
 
   return (

@@ -24,12 +24,7 @@ export const prescriptionFormSchema = z.object({
       }
     ),
 
-    pres_img_02: z.any().optional()
-    .refine(
-      (file) =>
-        file instanceof File || (typeof file === "string" && file.length > 0),
-      {
-        message: "Prescription image is required",
-      }
-    ),
+    pres_img_02: z
+    .any()
+    .optional()
 })

@@ -17,7 +17,7 @@ const AllPharmacyListSection = () => {
   const [loading, setLoading] = React.useState(true);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(8);
 
   React.useEffect(() => {
     const fetchPharmacies = async () => {
@@ -104,7 +104,7 @@ const AllPharmacyListSection = () => {
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[8, 16, 24]}
       />
     </Box>
   );

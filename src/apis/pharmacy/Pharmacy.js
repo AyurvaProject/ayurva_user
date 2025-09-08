@@ -20,3 +20,12 @@ export const GetOnePharmacy = async (id) => {
     const response = await axios.get(`${API_URL}/pharmacies/${id}`)
     return response.data.data;
 }
+
+export const GetSameDistrictPharmaciesByUserId = async () => {
+    const response = await axios.get(`${API_URL}/pharmacies/get/same-district-pharmacies-by-user/${GetCurrentUser().id}`, {
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+    })
+    return response.data.data;
+}

@@ -26,7 +26,7 @@ import { GetCurrentUser, GetOneUserById } from "../../apis/auth/Auth";
 import { IsAddressAvailableForUser } from "../../apis/address/Address";
 import { Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set } from "nprogress";
+import LoadingSection from "../loading/LoadingSection";
 
 const customTextFieldStyles = {
   width: "50%",
@@ -145,7 +145,7 @@ const ProductDetailsSection = ({ id }) => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <LoadingSection />;
   if (!product) return <div>Product not found</div>;
 
   const stockStatus =

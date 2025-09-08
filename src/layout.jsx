@@ -7,7 +7,7 @@ const Layout = () => {
   return (
     <>
       <Navbar />
-      <Container sx={{ minHeight: "80vh", mt: 2 }}>
+      <Container sx={{ minHeight: "80vh", width: "100%", mt: 2 }}>
         <Outlet />
       </Container>
       <Footer />

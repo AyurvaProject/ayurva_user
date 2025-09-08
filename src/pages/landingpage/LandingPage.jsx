@@ -41,12 +41,12 @@ const stats = [
 
 const LandingPage = () => {
   return (
-    <Box>
+    <Box sx={{ width: "100%" }}>
       <Box
         sx={{
           backgroundColor: "#1e293b", // Dark blue background
           color: "#ffffff",
-          padding: "50px 0",
+          // padding: "50px 0",
           maxWidth: "100%",
         }}
       >
@@ -55,9 +55,9 @@ const LandingPage = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            maxWidth: "100%",
+            width: "100vw",
             maxHeight: "380px",
-            margin: "0 auto",
+            // margin: "0 auto",
           }}
         >
           {/* Left Side: Text Content */}

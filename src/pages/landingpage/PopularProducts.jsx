@@ -73,13 +73,13 @@ const PopularProducts = () => {
         <Typography variant="h5" fontWeight="bold">
           Popular Products
         </Typography>
-        <Link
+        {/* <Link
           href="/products"
           underline="hover"
           sx={{ fontSize: "14px", color: "#007bff", cursor: "pointer" }}
         >
           View All →
-        </Link>
+        </Link> */}
       </Box>
 
       {/* Loading State */}

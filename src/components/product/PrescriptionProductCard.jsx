@@ -7,12 +7,18 @@ import {
   Divider,
   CardContent,
   Stack,
+  CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { CreatePrescriptionOrder } from "../../apis/prescriptionOrder/PrescriptionOrder";
+import { ChangePrescriptionDetailStatus } from "../../apis/prescriptionDetail/PrescriptionDetail";
 import { GetCurrentUser, GetOneUser } from "../../apis/auth/Auth";
 import CustomSnackbar from "../snackbar/CustomSnackbar";
-const PrescriptionProductCard = ({ prescription_detail_id, product }) => {
+const PrescriptionProductCard = ({
+  prescription_detail_id,
+  product,
+  prescriptionDetail,
+}) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -60,6 +66,7 @@ const PrescriptionProductCard = ({ prescription_detail_id, product }) => {
         user_id: user.id,
         pharmacist_id: product.pharmacist.id,
       });
+      await ChangePrescriptionDetailStatus(prescription_detail_id, false);
       showSnackbar("success", false, "Order placed successfully");
       setLoading(false);
       handlePageBack();
@@ -104,8 +111,16 @@ const PrescriptionProductCard = ({ prescription_detail_id, product }) => {
               color="primary"
               fullWidth
               onClick={() => handleSubmit()}
-              disabled={loading}
+              disabled={
+                loading ||
+                !user ||
+                !user.selected_address_id ||
+                prescriptionDetail.active_status === false
+              }
               sx={{ borderRadius: "8px", textTransform: "none" }}
+              startIcon={
+                loading ? <CircularProgress size={20} color="inherit" /> : null
+              }
             >
               Order Now
             </Button>

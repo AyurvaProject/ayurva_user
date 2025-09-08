@@ -5,13 +5,12 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 import { Button, Chip } from "@mui/material";
-import {
-  GetPendingPrescriptionsByUserId,
-  GetReadPrescriptionsByUserId,
-} from "../../apis/prescription/Prescription";
+import { GetReadPrescriptionsByUserId } from "../../apis/prescription/Prescription";
 import { useNavigate } from "react-router-dom";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 function createData(
   id,
@@ -34,14 +33,18 @@ const ReadPrescriptionSection = () => {
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
+  // Pagination states
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
   React.useEffect(() => {
-    const fetchPendingPrescriptions = async () => {
+    const fetchReadPrescriptions = async () => {
       setLoading(true);
-      const pendingPrescriptions = await GetReadPrescriptionsByUserId();
-      setRows(pendingPrescriptions);
+      const readPrescriptions = await GetReadPrescriptionsByUserId();
+      setRows(readPrescriptions);
       setLoading(false);
     };
-    fetchPendingPrescriptions();
+    fetchReadPrescriptions();
   }, []);
 
   console.log("rows", rows);
@@ -56,65 +59,103 @@ const ReadPrescriptionSection = () => {
     )
   );
 
+  // Handle page change
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Handle rows per page change
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // reset to first page
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ width: "900px" }} size="medium" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell align="left">Uploaded Date</TableCell>
-            <TableCell align="left">Uploaded Time</TableCell>
-            <TableCell align="center">Status</TableCell>
-            <TableCell align="center">Active/Not</TableCell>
-            <TableCell align="center">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tableRows.map((row) => (
-            <TableRow
-              key={row?.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row?.id}
-              </TableCell>
-              <TableCell align="left">{row?.pres_uploaded_date}</TableCell>
-              <TableCell align="left">{row?.pres_uploaded_time}</TableCell>
-              <TableCell align="center">
-                <Chip
-                  size="small"
-                  variant="filled"
-                  color={row?.pres_status === "pending" ? "warning" : "success"}
-                  label={row?.pres_status === "pending" ? "PENDING" : "READED"}
-                ></Chip>
-              </TableCell>
-              <TableCell align="center">
-                <Chip
-                  size="small"
-                  variant="filled"
-                  color={row?.pres_active_status ? "success" : "error"}
-                  label={row?.pres_active_status ? "Active" : "Not Active"}
-                ></Chip>
-              </TableCell>
-              <TableCell align="center">
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  disabled={!row?.pres_active_status}
-                  onClick={() => navigate(`/prescription/${row?.id}`)}
-                >
-                  View
-                </Button>
-              </TableCell>
+    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <TableContainer>
+        <Table
+          sx={{ width: "900px" }}
+          size="medium"
+          aria-label="prescriptions table"
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell align="left">Uploaded Date</TableCell>
+              <TableCell align="left">Uploaded Time</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Active/Not</TableCell>
+              <TableCell align="center">Actions</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {tableRows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <TableRow
+                  key={row?.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row?.id}
+                  </TableCell>
+                  <TableCell align="left">{row?.pres_uploaded_date}</TableCell>
+                  <TableCell align="left">{row?.pres_uploaded_time}</TableCell>
+                  <TableCell align="center">
+                    <Chip
+                      size="small"
+                      variant="filled"
+                      color={
+                        row?.pres_status === "pending" ? "warning" : "success"
+                      }
+                      label={
+                        row?.pres_status === "pending" ? "Pending" : "Done"
+                      }
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Chip
+                      size="small"
+                      variant="filled"
+                      color={row?.pres_active_status ? "success" : "error"}
+                      label={row?.pres_active_status ? "Active" : "Not Active"}
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button
+                      size="small"
+                      variant="text"
+                      color="primary"
+                      sx={{
+                        textTransform: "none",
+                      }}
+                      startIcon={<RemoveRedEyeIcon />}
+                      disabled={!row?.pres_active_status}
+                      onClick={() => navigate(`/prescription/${row?.id}`)}
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <TablePagination
+        component="div"
+        count={tableRows.length}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        rowsPerPageOptions={[5, 10, 25]}
+      />
+    </Paper>
   );
 };
 

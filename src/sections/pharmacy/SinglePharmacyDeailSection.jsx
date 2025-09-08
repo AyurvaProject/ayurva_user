@@ -18,6 +18,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import PersonIcon from "@mui/icons-material/Person";
 import { GetOnePharmacy } from "../../apis/pharmacy/Pharmacy";
 import PharmacyProductSection from "../product/PharmacyProductSection";
+import LoadingSection from "../loading/LoadingSection";
 
 const PharmacyDetailsSection = ({ id }) => {
   const [pharmacy, setPharmacy] = React.useState({});
@@ -38,7 +39,7 @@ const PharmacyDetailsSection = ({ id }) => {
   }, [id]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSection />;
   }
   return (
     <Box p={4}>

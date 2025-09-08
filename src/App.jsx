@@ -25,6 +25,7 @@ import SinglePharmacy from "./pages/pharmacy/SinglePharmacy";
 import SingleProduct from "./pages/product/SingleProduct";
 import SinglePrescription from "./pages/prescription/SinglePrescription";
 import NearProducts from "./pages/product/NearProducts";
+import MainNavigate from "./pages/landingpage/MainNavigate";
 
 function App() {
   return (
@@ -34,8 +35,9 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/main" element={<MainNavigate />} />
             <Route element={<ProtectedRoute roles={["user"]} />}>
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile/:tab" element={<ProfilePage />} />
               <Route path="/createAddress" element={<AddressEdit />} />
               <Route path="/editAddress/:id" element={<AddressEdit />} />
               <Route path="/prescription/add" element={<AddPrescription />} />

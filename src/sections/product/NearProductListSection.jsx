@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
 import { GetNearProducts } from "../../apis/products/Products";
+import { GetPrescriptionDetailById } from "../../apis/prescriptionDetail/PrescriptionDetail";
 import PrescriptionProductCard from "../../components/product/PrescriptionProductCard";
 import { Divider, Box, Typography } from "@mui/material";
 const NearProductListSection = ({ presDetailId, licenseNo }) => {
   const [products, setProducts] = useState([]);
+  const [prescriptionDetail, setPrescriptionDetail] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const products = await GetNearProducts(licenseNo);
+        const presDetail = await GetPrescriptionDetailById(presDetailId);
+        setPrescriptionDetail(presDetail);
         setProducts(products);
       } catch (err) {
         console.error("Failed to fetch pharmacies", err);
@@ -55,6 +59,7 @@ const NearProductListSection = ({ presDetailId, licenseNo }) => {
               key={product.id}
               product={product}
               prescription_detail_id={presDetailId}
+              prescriptionDetail={prescriptionDetail}
             />
           ))}
         </Box>

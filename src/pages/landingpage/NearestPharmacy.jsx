@@ -14,30 +14,35 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {
   GetNearPharmacyByUserId,
   GetAllPharmacies,
+  GetSameDistrictPharmaciesByUserId,
 } from "../../apis/pharmacy/Pharmacy";
 import { GetCurrentUser } from "../../apis/auth/Auth";
 import { motion, AnimatePresence } from "framer-motion";
 import PharmacyCard from "../../components/pharmacy/PharmacyCard";
 import { IsAddressAvailableForUser } from "../../apis/address/Address";
+// import { set } from "nprogress";
 
 const NearestPharmacies = () => {
   const [pharmacies, setPharmacies] = React.useState([]);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
+  const [hasAddress, setHasAddress] = React.useState(false);
 
   React.useEffect(() => {
     const fetchPharmacies = async () => {
       try {
-        let data;
-        const isAvailable = await IsAddressAvailableForUser(
-          GetCurrentUser()?.id
-        );
+        let data,
+          isAvailable = false;
+        if (GetCurrentUser()) {
+          isAvailable = await IsAddressAvailableForUser(GetCurrentUser()?.id);
+        }
+
         if (GetCurrentUser() && isAvailable) {
           data = await GetAllPharmacies();
         } else {
           data = await GetAllPharmacies();
         }
-
+        setHasAddress(isAvailable);
         setPharmacies(data);
       } catch (err) {
         console.error("Failed to fetch pharmacies", err);
@@ -78,15 +83,17 @@ const NearestPharmacies = () => {
         }}
       >
         <Typography variant="h5" fontWeight="bold">
-          Your Nearest Pharmacies
+          {hasAddress ? "Nearby Pharmacies" : "Top Pharmacies"}
         </Typography>
-        <Link
+        <Button
+          variant="text"
           href="/pharmacies"
+          endIcon={<ArrowForwardIcon />}
           underline="hover"
-          sx={{ fontSize: "14px", color: "#007bff", cursor: "pointer" }}
+          sx={{ textTransform: "none", cursor: "pointer" }}
         >
-          View All →
-        </Link>
+          View All
+        </Button>
       </Box>
 
       {/* Loading State */}

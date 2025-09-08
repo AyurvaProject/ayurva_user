@@ -1,5 +1,8 @@
 import React from "react";
-import { GetNearPharmacyByUserId } from "../../apis/pharmacy/Pharmacy";
+import {
+  GetNearPharmacyByUserId,
+  GetSameDistrictPharmaciesByUserId,
+} from "../../apis/pharmacy/Pharmacy";
 import PharmacyCard from "../../components/pharmacy/PharmacyCard";
 import {
   Box,
@@ -14,12 +17,12 @@ const NearPharmacyListSection = () => {
   const [loading, setLoading] = React.useState(true);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(8);
 
   React.useEffect(() => {
     const fetchPharmacies = async () => {
       try {
-        const pharmacies = await GetNearPharmacyByUserId();
+        const pharmacies = await GetSameDistrictPharmaciesByUserId();
         setPharmacies(pharmacies);
       } catch (err) {
         console.error("Failed to fetch pharmacies", err);
@@ -101,7 +104,7 @@ const NearPharmacyListSection = () => {
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[8, 16, 24]}
       />
     </Box>
   );

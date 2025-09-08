@@ -45,8 +45,8 @@ function a11yProps(index) {
   };
 }
 
-const ProfileMainSection = () => {
-  const [value, setValue] = React.useState(0);
+const ProfileMainSection = ({ tab }) => {
+  const [value, setValue] = React.useState(Number(tab));
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

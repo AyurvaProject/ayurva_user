@@ -21,6 +21,7 @@ import CustomSnackbar from "../../components/snackbar/CustomSnackbar";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import InfoIcon from "@mui/icons-material/Info";
 import { useNavigate } from "react-router-dom";
+import LoadingSection from "../loading/LoadingSection";
 
 const SinglePrescriptionSection = ({ id }) => {
   const navigate = useNavigate();
@@ -53,18 +54,7 @@ const SinglePrescriptionSection = ({ id }) => {
   }, [id]);
 
   if (loading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "50vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingSection />;
   }
 
   return (
