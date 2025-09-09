@@ -9,8 +9,38 @@ import {
   Divider,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { GetPharmacyByPharmacistId } from "../../apis/pharmacy/Pharmacy";
+import { GetDeliveryOrgById } from "../../apis/deliveryOrg/DeliveryOrg";
+import { useState, useEffect } from "react";
 
 const OrderCard = ({ order }) => {
+  const [pharmacy, setPharmacy] = useState(null);
+  const [deliveryOrg, setDeliveryOrg] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPharmacy = async () => {
+      setLoading(true);
+      const pharmacyData = await GetPharmacyByPharmacistId(order.pharmacist_id);
+      setPharmacy(pharmacyData);
+      setLoading(false);
+    };
+    fetchPharmacy();
+  }, [order.pharmacist_id]);
+
+  useEffect(() => {
+    const fetchDeliveryOrg = async () => {
+      if (order.deliveryperson) {
+        setLoading(true);
+        const deliveryOrgData = await GetDeliveryOrgById(
+          order.deliveryperson.delivery_org_id
+        );
+        setDeliveryOrg(deliveryOrgData);
+        setLoading(false);
+      }
+    };
+    fetchDeliveryOrg();
+  }, [order.deliveryperson]);
   console.log(order);
   return (
     <Accordion sx={{ width: "900px" }}>
@@ -52,10 +82,13 @@ const OrderCard = ({ order }) => {
             <Typography variant="body1">Pharmacy Details</Typography>
             <Divider sx={{ my: 1 }} />
             <Typography variant="body2">
-              Pharmacy: {order.pharmacist.pharmacist_name}
+              Pharmacy: {loading ? "Loading..." : pharmacy?.pharmacy_name}
             </Typography>
             <Typography variant="body2">
               Pharmacist: {order.pharmacist.pharmacist_name}
+            </Typography>
+            <Typography variant="body2">
+              Contact: {loading ? "Loading..." : pharmacy?.pharmacy_contact_01}
             </Typography>
             <Chip
               label={
@@ -84,10 +117,11 @@ const OrderCard = ({ order }) => {
             <Typography variant="body1">Delivery Details</Typography>
             <Divider sx={{ my: 1 }} />
             <Typography variant="body2">
-              Deliver By: {order?.delivery_person?.delivery_person_name}
+              Deliver By:{" "}
+              {loading ? "Loading..." : deliveryOrg?.delivery_org_name}
             </Typography>
             <Typography variant="body2">
-              Curier: {order?.delivery_person?.delivery_person_name}
+              Curier: {order?.deliveryperson?.delivery_person_name}
             </Typography>
             <Chip
               label={

@@ -29,3 +29,13 @@ export const GetSameDistrictPharmaciesByUserId = async () => {
     })
     return response.data.data;
 }
+
+export const GetPharmacyByPharmacistId = async (id) => {
+    const response = await axios.get(`${API_URL}/pharmacies/pharmacy-by-pharmacist-id/${id}`,{
+        headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+    })
+
+    return response.data.data;
+}

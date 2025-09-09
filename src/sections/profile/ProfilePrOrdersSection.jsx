@@ -23,13 +23,20 @@ const ProfilePrOrderSection = () => {
           <Tab label="PENDING" />
           <Tab label="CANCELLED" />
           <Tab label="ACCEPTED" />
+          <Tab label="READY" />
         </Tabs>
       </Box>
 
       <Box sx={{ mb: 2, width: "100%" }}>
         <PrOrdersListSection
           status={
-            value === 0 ? "pending" : value === 1 ? "rejected" : "accepted"
+            value === 0
+              ? "pending"
+              : value === 1
+              ? "rejected"
+              : value === 2
+              ? "accepted"
+              : "completed"
           }
         />
       </Box>
