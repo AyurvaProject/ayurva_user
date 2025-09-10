@@ -11,6 +11,7 @@ import { Button, Chip } from "@mui/material";
 import { GetReadPrescriptionsByUserId } from "../../apis/prescription/Prescription";
 import { useNavigate } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import LoadingSection from "../../sections/loading/LoadingSection";
 
 function createData(
   id,
@@ -71,7 +72,11 @@ const ReadPrescriptionSection = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box sx={{ width: "900px" }}>
+        <LoadingSection />
+      </Box>
+    );
   }
 
   return (

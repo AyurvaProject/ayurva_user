@@ -26,32 +26,32 @@ const roles = [
   {
     title: "Pharmacists",
     icon: <LocalPharmacyIcon sx={{ fontSize: 50, color: "#059669" }} />,
-    path: "https://ayurva-pharmacist.pages.dev/",
+    path: "https://ayurva-pharmacist-m.pages.dev/login",
     color: "#ECFDF5",
   },
 
   {
     title: "Prescription Readers",
     icon: <DescriptionIcon sx={{ fontSize: 50, color: "#2563EB" }} />,
-    path: "https://ayurva-prescription-reader.pages.dev/",
+    path: "https://6fac2301.ayurva-prescription-reader.pages.dev/login",
     color: "#EFF6FF",
   },
   {
     title: "Delivery Organizations",
     icon: <BusinessIcon sx={{ fontSize: 50, color: "#7C3AED" }} />,
-    path: "https://ayurva-delivery-org.pages.dev/",
+    path: "https://ayurva-delivery-org.pages.dev/login",
     color: "#F5F3FF",
   },
   {
     title: "Delivery Persons",
     icon: <LocalShippingIcon sx={{ fontSize: 50, color: "#DC2626" }} />,
-    path: "https://ayurva-delivery-person.pages.dev/",
+    path: "https://ayurva-delivery-person.pages.dev/login",
     color: "#FEF2F2",
   },
   {
     title: "Admin",
     icon: <AdminPanelSettingsIcon sx={{ fontSize: 50, color: "#D97706" }} />,
-    path: "https://ayurva-admin.pages.dev/",
+    path: "https://ayurva-admin-v2.pages.dev/login",
     color: "#FFFBEB",
   },
 ];

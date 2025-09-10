@@ -9,6 +9,7 @@ import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 import { Chip } from "@mui/material";
 import { GetPendingPrescriptionsByUserId } from "../../apis/prescription/Prescription";
+import LoadingSection from "../../sections/loading/LoadingSection";
 
 function createData(
   id,
@@ -64,7 +65,11 @@ const PendingPrescriptionSection = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box sx={{ width: "900px" }}>
+        <LoadingSection />
+      </Box>
+    );
   }
 
   return (

@@ -89,8 +89,8 @@ const AddressCard = ({
           <Tooltip title="View">
             <IconButton
               color="primary"
-              onClick={() => {}}
               sx={{ borderRadius: 2 }}
+              onClick={() => navigate(`/editAddress/${address.address_id}`)}
             >
               <VisibilityIcon />
             </IconButton>

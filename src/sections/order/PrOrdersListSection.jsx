@@ -18,7 +18,11 @@ const PrOrdersListSection = ({ status }) => {
   }, [status]);
 
   if (loading) {
-    return <LoadingSection />;
+    return (
+      <Box sx={{ width: "900px" }}>
+        <LoadingSection />
+      </Box>
+    );
   }
   return (
     <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>

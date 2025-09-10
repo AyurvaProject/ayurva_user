@@ -31,7 +31,11 @@ const OrdersListSection = ({ status }) => {
   };
 
   if (loading) {
-    return <LoadingSection />;
+    return (
+      <Box sx={{ width: "900px" }}>
+        <LoadingSection />
+      </Box>
+    );
   }
 
   // Slice orders for current page

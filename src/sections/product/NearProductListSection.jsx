@@ -3,6 +3,7 @@ import { GetNearProducts } from "../../apis/products/Products";
 import { GetPrescriptionDetailById } from "../../apis/prescriptionDetail/PrescriptionDetail";
 import PrescriptionProductCard from "../../components/product/PrescriptionProductCard";
 import { Divider, Box, Typography } from "@mui/material";
+import LoadingSection from "../loading/LoadingSection";
 const NearProductListSection = ({ presDetailId, licenseNo }) => {
   const [products, setProducts] = useState([]);
   const [prescriptionDetail, setPrescriptionDetail] = useState(null);
@@ -25,7 +26,7 @@ const NearProductListSection = ({ presDetailId, licenseNo }) => {
   }, [licenseNo]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSection />;
   }
 
   if (products.length === 0) {

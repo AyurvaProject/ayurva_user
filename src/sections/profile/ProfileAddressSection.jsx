@@ -103,7 +103,11 @@ const ProfileAddressSection = () => {
   };
 
   if (loading || userLoading) {
-    return <LoadingSection />;
+    return (
+      <Box sx={{ width: "900px" }}>
+        <LoadingSection />
+      </Box>
+    );
   }
 
   return (
