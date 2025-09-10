@@ -161,7 +161,7 @@ const LandingPage = () => {
 
         <PopularProduct />
         <NearestPharmacy />
-        <SearchByCategory />
+        {/* <SearchByCategory /> */}
         <Delivery />
         <HowToUseAyurva />
       </Box>
