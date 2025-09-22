@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, Box } from "@mui/material";
 import { GetReadPrescriptionsByUserId } from "../../apis/prescription/Prescription";
 import { useNavigate } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";

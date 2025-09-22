@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
-import { Chip } from "@mui/material";
+import { Chip, Box } from "@mui/material";
 import { GetPendingPrescriptionsByUserId } from "../../apis/prescription/Prescription";
 import LoadingSection from "../../sections/loading/LoadingSection";
 
