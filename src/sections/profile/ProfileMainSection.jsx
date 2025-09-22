@@ -80,10 +80,10 @@ const ProfileMainSection = ({ tab }) => {
       <TabPanel value={value} index={3}>
         <ProfileReadPrSection />
       </TabPanel>
-      <TabPanel value={value} index={4}>
+      <TabPanel value={value} index={5}>
         <ProfileOrderSection />
       </TabPanel>
-      <TabPanel value={value} index={5}>
+      <TabPanel value={value} index={4}>
         <ProfilePrOrderSection />
       </TabPanel>
     </Box>
