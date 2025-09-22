@@ -63,10 +63,10 @@ const ProfileMainSection = ({ tab }) => {
       >
         <Tab label="Profile" {...a11yProps(0)} />
         <Tab label="My Addresses" {...a11yProps(1)} />
-        <Tab label="Requests" {...a11yProps(2)} />
+        <Tab label="Uploaded Prescriptions" {...a11yProps(2)} />
         <Tab label="Read Prescriptions" {...a11yProps(3)} />
-        <Tab label="Orders" {...a11yProps(4)} />
         <Tab label="Prescription Orders" {...a11yProps(5)} />
+        <Tab label="Orders" {...a11yProps(4)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <ProfileDetailSection />
